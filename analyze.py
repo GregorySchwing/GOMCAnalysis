@@ -1,17 +1,21 @@
 import sys, os, glob
 import numpy as np  
-from simpleHist import plot_histograms_within_a_multisim
+from simpleHist import visual_inspection_plots
+from simpleHist import combined_max_likelihood
+from simpleHist import single_replica_MLE
 from simpleHist import plot_histograms_across_two_multisims_individual_replicas
 from simpleHist import plot_histograms_across_two_multisims_all_replicas
 from subprocess import check_output
-
+from simpleHist import plot_histograms_within_a_multisim_num_molecules
+from simpleHist import plot_histograms_across_two_multisims_individual_replicas_num_molecules
+from simpleHist import plot_histograms_across_two_multisims_all_replicas_num_molecules
+from simpleHist import testEq6WithinAMultiSim
 
 def generate_energy_files(startpath):
     for root, dirs, files in os.walk(startpath):
 	checkIfEmpty_Ensemble = "%s/*/*/Blk_*BOX_0.dat" % root
 	if len(glob.glob(checkIfEmpty_Ensemble)) > 0:
 		tokens = root.split(os.sep)
-       		print "I think this is NVT: %s" % tokens[len(tokens)-1]
        		ensemble = tokens[len(tokens)-1]
 ########## ONLY IF A Blk*BOX_0.dat EXISTS ################
         checkIfEmpty_0 = "%s/Blk_*BOX_0.dat" % root
@@ -34,10 +38,10 @@ def generate_energy_files(startpath):
             for value in my_dict[ensemble]:
 #	    print "creating %s" % name
             # To obtain a file with only the energy values, assumed to be column 2 for now
-            	systemCall2 =  "cat %s | awk \'{print $2}\' > %s/energy_BOX_1.dat" % (name, root, value)
+            	systemCall2 =  "cat %s | awk \'{print $2}\' > %s/%s_BOX_1.dat" % (name, root, value)
             	os.popen(systemCall2)
             # To remove equilibration outputs, hardcoded as 5000 lines for now
-            	systemCall4 = "sed -i '1,5000d' %s/energy_BOX_1.dat" % (root, value)
+            	systemCall4 = "sed -i '1,5000d' %s/%s_BOX_1.dat" % (root, value)
             	os.popen(systemCall4)
 ########## ONLY IF A Blk*BOX_1.dat EXISTS ################
 
@@ -159,7 +163,9 @@ def generate_energy_histograms_within_a_multisim(startpath, my_dict):
 		if len(glob.glob(checkIfEmpty_2)) > 0:
 			tokens = dirname.split(os.sep)
 			for value in my_dict[tokens[len(tokens)-2]]:
-				plot_histograms_within_a_multisim(dirname, 0, value)
+				#visual_inspection_plots(dirname, 0, value)
+				combined_max_likelihood(dirname, 0, value)
+				#single_replica_MLE(dirname, 0, value)		
 				print dirname+" "+value+" Box 0 histogram generated"
 				
 
@@ -167,7 +173,7 @@ def generate_energy_histograms_within_a_multisim(startpath, my_dict):
 		if len(glob.glob(checkIfEmpty_3)) > 0:
 			tokens = dirname.split(os.sep)
 			for value in my_dict[tokens[len(tokens)-2]]:
-				plot_histograms_within_a_multisim(dirname, 1, value)
+				visual_inspection_plots(dirname, 1, value)
 				print dirname+" "+value+" Box 1 histogram generated"
 
 
@@ -262,20 +268,20 @@ def generate_num_molecules_histograms_across_two_multisims_all_replicas(startpat
 		########## ONLY IF A Blk*BOX_0.dat EXISTS ################
 		checkIfEmpty_2 = "%s/*/*/n1dis5a.dat" % dirname
 		if len(glob.glob(checkIfEmpty_2)) > 0:
-			plot_histograms_across_two_multisims_all_replicas_num_molecules(dirname, 0, 'n1dis5a.dat')
+			plot_histograms_across_two_multisims_all_replicas_num_molecules(dirname, 0, "Num Molecules")
 			print dirname+" num molecules histogram generated"	
 
 		########## ONLY IF A Blk*BOX_0.dat EXISTS ################	
 
 
-print "Does ./validation exist? : \t\t", os.path.isdir("./validation")
-print "Does ./validation/GCMC exist? :\t\t", os.path.isdir("./validation/GCMC")
-print "Does ./validation/NPT exist? : \t\t", os.path.isdir("./validation/NPT")
-print "Does ./validation/NVT exist? : \t\t", os.path.isdir("./validation/NVT")
-print "Does ./validation/GEMC_NVT exist? : \t", os.path.isdir("./validation/GEMC_NVT")
-print "Does ./validation/GEMC_NPT exist? : \t", os.path.isdir("./validation/GEMC_NPT")
+print "Does ./validation exist? : \t\t", os.path.isdir("./validation_9_17_19")
+print "Does ./validation/GCMC exist? :\t\t", os.path.isdir("./validation_9_17_19/GCMC")
+print "Does ./validation/NPT exist? : \t\t", os.path.isdir("./validation_9_17_19/NPT")
+print "Does ./validation/NVT exist? : \t\t", os.path.isdir("./validation_9_17_19/NVT")
+print "Does ./validation/GEMC_NVT exist? : \t", os.path.isdir("./validation_9_17_19/GEMC_NVT")
+print "Does ./validation/GEMC_NPT exist? : \t", os.path.isdir("./validation_9_17_19/GEMC_NPT")
 
-listOfNVTObservables = ['energy', 'pressure']
+listOfNVTObservables = ['energy']#, 'pressure']
 listOfNPTObservables = ['energy', 'density']
 listOfGCMCObservables = ['energy']
 listOfGEMC_NVT_BinaryObservables = ['energy', 'density', 'MOLFRACT_AR', 'MOLFRACT_KR']
@@ -283,7 +289,7 @@ listOfGEMC_NVT_BinaryObservables = ['energy', 'density', 'MOLFRACT_AR', 'MOLFRAC
 listOfGEMC_NVT_PureObservables = ['energy', 'pressure']#, 'vapor_pressure']
 listOfGEMC_NPTObservables = ['energy', 'density']
 
-my_dict = {'GCMC':listOfGCMCObservables, 'NVT':listOfNVTObservables, 'NPT':listOfNPTObservables, 'GEMC_NPT':listOfGEMC_NPTObservables, 'binary':listOfGEMC_NVT_BinaryObservables, 'pure':listOfGEMC_NVT_PureObservables}
+my_dict = {'mu':listOfGCMCObservables, 'mu_temp':listOfGCMCObservables, 'temp':listOfGCMCObservables, 'NVT':listOfNVTObservables, 'NPT':listOfNPTObservables, 'GEMC_NPT':listOfGEMC_NPTObservables, 'binary_mixture':listOfGEMC_NVT_BinaryObservables, 'pure_fluid':listOfGEMC_NVT_PureObservables}
 #print my_dict['GCMC']
 #for files in my_dict['GCMC']:
 #	print files
@@ -291,31 +297,32 @@ my_dict = {'GCMC':listOfGCMCObservables, 'NVT':listOfNVTObservables, 'NPT':listO
 
 
 homedir = os.getcwd()
-generate_energy_files(os.getcwd())
-os.chdir(homedir)
-#os.chdir("./validation/NPT")
+#os.chdir("./validation_9_17_19/GCMC")
+#generate_energy_files(os.getcwd())
+#os.chdir(homedir)
+#os.chdir("./validation_9_17_19/NPT")
 #generate_density_NPT_files(os.getcwd())
 #os.chdir(homedir)
-os.chdir("./validation/NVT")
-generate_pressure_NVT_files(os.getcwd())
-os.chdir(homedir)
-#os.chdir("./validation/GEMC_NVT/pure")
-#generate_pressure_NVT_files(os.getwcd())
+#os.chdir("./validation_9_17_19/NVT")
+#generate_pressure_NVT_files(os.getcwd())
 #os.chdir(homedir)
-#os.chdir("./validation/GEMC_NVT/binary")
+#os.chdir("./validation_9_17_19/GEMC_NVT/pure_fluid")
+#generate_pressure_NVT_files(os.getcwd())
+#os.chdir(homedir)
+#os.chdir("./validation_9_17_19/GEMC_NVT/binary_mixture")
 #generate_density_GEMC_NVT_binary_molfrac_files(os.getcwd())
 #generate_density_GEMC_files(os.getcwd())
 #os.chdir(homedir)
-#os.chdir("./validation/GEMC_NPT")
+#os.chdir("./validation_9_17_19/GEMC_NPT")
 #generate_density_GEMC_files(os.getcwd())
 #os.chdir(homedir)
 
 #generate_num_molecules_histograms_within_a_multisim(os.getcwd(), my_dict)
 #generate_num_molecules_histograms_across_two_multisims_individual_replicas(os.getcwd(), my_dict)
 #generate_num_molecules_histograms_across_two_multisims_all_replicas(os.getcwd(), my_dict)
-
 generate_energy_histograms_within_a_multisim(os.getcwd(), my_dict)
-generate_energy_histograms_across_two_multisims_individual_replicas(os.getcwd(), my_dict)
-generate_energy_histograms_across_two_multisims_all_replicas(os.getcwd(), my_dict)
 
+#generate_energy_histograms_across_two_multisims_individual_replicas(os.getcwd(), my_dict)
+#generate_energy_histograms_across_two_multisims_all_replicas(os.getcwd(), my_dict)
+#generate_num_molecules_histograms_across_two_multisims_all_replicas(os.getcwd(), my_dict)
 
