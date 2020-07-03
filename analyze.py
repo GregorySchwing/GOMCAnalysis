@@ -315,8 +315,8 @@ my_dict = {'mu':listOfGCMCObservables, 'mu_temp':listOfGCMCObservables, 'temp':l
 
 homedir = os.getcwd()
 #os.chdir("./validation_9_17_19/GCMC")
-#generate_energy_files(os.getcwd())
-#generate_energy_swaps(os.getcwd())
+generate_energy_files(os.getcwd())
+generate_energy_swaps(os.getcwd())
 #os.chdir(homedir)
 #os.chdir("./validation_9_17_19/NPT")
 #generate_density_NPT_files(os.getcwd())
