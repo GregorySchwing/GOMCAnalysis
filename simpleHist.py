@@ -549,6 +549,70 @@ def plot_histograms_across_two_multisims_all_replicas(dottedtpath, box, value):
 		print "For BOX_%s %s histograms, plotting %s" % (box, value, name)
 		#print temp
 		floats.append(np.fromfile(name, dtype=float, count=-1, sep='\n'))
+
+		unnormedHist1, unnormedBin_edges1 = np.histogram(floats[index], bins='auto')
+		bincenters1 = np.array(0.5*(unnormedBin_edges1[1:]+unnormedBin_edges1[:-1]))
+		#print floats[index]
+
+		# histogram ratio in realspace
+		plt.errorbar(
+    		x = bincenters1,
+    		y = unnormedHist1
+		)
+		index = index+1
+	
+	filename = "%s/%s_BOX_%s_histograms_of_all_replicas_exchange_vs_nonexchange.png" % (dottedtpath, value, box)
+	#plt.title("NVT Butane") 
+	#plt.annotate('solid: development branch after merge compiled with mpi run as multisim', xy=(0.625, 0.96), xycoords='axes fraction', size=7.3)
+	#plt.annotate('dashed: development branch before merge', xy=(0.625, 0.93), xycoords='axes fraction', size=7.3)
+	#plt.annotate('dotted: development branch after merge compiled without mpi', xy=(0.625, 0.90), xycoords='axes fraction', size=7.3)
+	#plt.annotate('dashdot: No Parallel Tempering', xy=(0.625, 0.86), xycoords='axes fraction', size=7.3)
+
+	swapfloats = []
+	index = 0
+	checkIfEmpty = "%s/*/*/swaps.dat" % (dottedtpath)
+	for name in glob.glob(checkIfEmpty):
+	#	print "For BOX_%s %s histograms, plotting %s" % (box, value, name)
+		#print temp
+		swapfloats.append(np.fromfile(name, dtype=float, count=-1, sep='\n'))
+		plt.plot(swapfloats[index], np.zeros(swapfloats[index].size))
+		#print floats[index]
+	#	parameters = stats.norm.fit(floats[index])  
+		#lnspc = np.linspace(np.amin(floats[index]), np.amax(floats[index]), floats[index].size)
+	#	lnspc = np.linspace(np.amin(floats[index]), np.amax(floats[index]), (np.amax(floats[index]) - np.amin(floats[index]))/2)
+	#	pdf_gamma = stats.norm.pdf(lnspc,loc = parameters[0],scale = parameters[1])
+	#	if "dev_multisim" in name:
+	#		plt.plot(lnspc, pdf_gamma, linestyle="dashed", linewidth=2)
+	#	elif "nonMPInonPT" in name:
+	#		plt.plot(lnspc, pdf_gamma, linestyle="dotted", linewidth=2)
+	#	else:
+	#		plt.plot(lnspc, pdf_gamma, linewidth=1)		
+		index = index+1
+
+
+	plt.ylabel('Probability')
+	plt.xlabel(value)
+	plt.savefig(filename, bbox_inches='tight')
+	plt.clf()
+	plt.cla()
+
+def fit_data_to_norm_dist_across_two_multisims_all_replicas(dottedtpath, box, value):
+	#	print dottedtpath, box
+	global checkIfEmpty
+	floats = []
+	if box == 0:
+		checkIfEmpty = "%s/*/*/%s_BOX_0.dat" % (dottedtpath, value)
+	elif box == 1:
+		checkIfEmpty = "%s/*/*/%s_BOX_1.dat" % (dottedtpath, value)
+	else:
+		print "Box must be either 0 or 1."
+		return
+	index = 0
+#	print "Right before for loop"
+	for name in glob.glob(checkIfEmpty):
+		print "For BOX_%s %s histograms, plotting %s" % (box, value, name)
+		#print temp
+		floats.append(np.fromfile(name, dtype=float, count=-1, sep='\n'))
 		#print floats[index]
 		parameters = stats.norm.fit(floats[index])  
 		#lnspc = np.linspace(np.amin(floats[index]), np.amax(floats[index]), floats[index].size)

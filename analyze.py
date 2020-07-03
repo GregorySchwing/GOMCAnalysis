@@ -5,6 +5,7 @@ from simpleHist import combined_max_likelihood
 from simpleHist import single_replica_MLE
 from simpleHist import plot_histograms_across_two_multisims_individual_replicas
 from simpleHist import plot_histograms_across_two_multisims_all_replicas
+from simpleHist import fit_data_to_norm_dist_across_two_multisims_all_replicas
 from subprocess import check_output
 from simpleHist import plot_histograms_within_a_multisim_num_molecules
 from simpleHist import plot_histograms_across_two_multisims_individual_replicas_num_molecules
@@ -314,8 +315,8 @@ my_dict = {'mu':listOfGCMCObservables, 'mu_temp':listOfGCMCObservables, 'temp':l
 
 homedir = os.getcwd()
 #os.chdir("./validation_9_17_19/GCMC")
-generate_energy_files(os.getcwd())
-generate_energy_swaps(os.getcwd())
+#generate_energy_files(os.getcwd())
+#generate_energy_swaps(os.getcwd())
 #os.chdir(homedir)
 #os.chdir("./validation_9_17_19/NPT")
 #generate_density_NPT_files(os.getcwd())
