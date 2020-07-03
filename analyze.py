@@ -26,7 +26,7 @@ def generate_energy_files(startpath):
             	systemCall1 =  "cat %s | awk \'{print $2}\' > %s/%s_BOX_0.dat" % (name, root, value)
             	os.popen(systemCall1)
             	# To remove equilibration outputs, hardcoded as 5000 lines for now
-            	systemCall3 = "sed -i '1,5000d' %s/%s_BOX_0.dat" % (root, value)
+            	systemCall3 = "sed -i '1,1d' %s/%s_BOX_0.dat" % (root, value)
             	os.popen(systemCall3)
 ########## ONLY IF A Blk*BOX_0.dat EXISTS ################
 
@@ -44,6 +44,22 @@ def generate_energy_files(startpath):
             	systemCall4 = "sed -i '1,5000d' %s/%s_BOX_1.dat" % (root, value)
             	os.popen(systemCall4)
 ########## ONLY IF A Blk*BOX_1.dat EXISTS ################
+
+def generate_energy_swaps(startpath):
+    for root, dirs, files in os.walk(startpath):
+	checkIfEmpty_Ensemble = "%s/*/*/ConsoleOut.dat" % root
+	if len(glob.glob(checkIfEmpty_Ensemble)) > 0:
+	    tokens = root.split(os.sep)
+       	    ensemble = tokens[len(tokens)-1]
+        checkIfEmpty_0 = "%s/ConsoleOut.dat" % root
+        for name in glob.glob(checkIfEmpty_0):
+      	    systemCall1 =  "cat %s | grep swap | awk \'{print $2}\' > %s/swaps.dat" % (name, root)
+            os.popen(systemCall1)
+            # To remove equilibration outputs, hardcoded as 5000 lines for now
+            systemCall3 = "sed -i '1,1d' %s/swaps.dat" % (root)
+            os.popen(systemCall3)
+
+
 
 def generate_density_NPT_files(startpath):
     for root, dirs, files in os.walk(startpath):
@@ -163,8 +179,8 @@ def generate_energy_histograms_within_a_multisim(startpath, my_dict):
 		if len(glob.glob(checkIfEmpty_2)) > 0:
 			tokens = dirname.split(os.sep)
 			for value in my_dict[tokens[len(tokens)-2]]:
-				#visual_inspection_plots(dirname, 0, value)
-				combined_max_likelihood(dirname, 0, value)
+				visual_inspection_plots(dirname, 0, value)
+				#combined_max_likelihood(dirname, 0, value)
 				#single_replica_MLE(dirname, 0, value)		
 				print dirname+" "+value+" Box 0 histogram generated"
 				
@@ -298,7 +314,8 @@ my_dict = {'mu':listOfGCMCObservables, 'mu_temp':listOfGCMCObservables, 'temp':l
 
 homedir = os.getcwd()
 #os.chdir("./validation_9_17_19/GCMC")
-#generate_energy_files(os.getcwd())
+generate_energy_files(os.getcwd())
+generate_energy_swaps(os.getcwd())
 #os.chdir(homedir)
 #os.chdir("./validation_9_17_19/NPT")
 #generate_density_NPT_files(os.getcwd())
@@ -320,9 +337,9 @@ homedir = os.getcwd()
 #generate_num_molecules_histograms_within_a_multisim(os.getcwd(), my_dict)
 #generate_num_molecules_histograms_across_two_multisims_individual_replicas(os.getcwd(), my_dict)
 #generate_num_molecules_histograms_across_two_multisims_all_replicas(os.getcwd(), my_dict)
-generate_energy_histograms_within_a_multisim(os.getcwd(), my_dict)
+#generate_energy_histograms_within_a_multisim(os.getcwd(), my_dict)
 
 #generate_energy_histograms_across_two_multisims_individual_replicas(os.getcwd(), my_dict)
-#generate_energy_histograms_across_two_multisims_all_replicas(os.getcwd(), my_dict)
+generate_energy_histograms_across_two_multisims_all_replicas(os.getcwd(), my_dict)
 #generate_num_molecules_histograms_across_two_multisims_all_replicas(os.getcwd(), my_dict)
 

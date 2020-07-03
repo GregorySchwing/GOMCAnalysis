@@ -467,7 +467,7 @@ def combined_max_likelihood(dottedtpath, box, value):
 			plt.errorbar(
     			x = floats[i],
     			y = floats[i]*deltaBeta,
-			yerr = 2*np.sqrt(np.var(floats[i]*deltaBeta)),
+			#yerr = 2*np.sqrt(np.var(floats[i]*deltaBeta)),
 			color='blue'
 			)
 			# -(B2-B1)E
@@ -567,6 +567,29 @@ def plot_histograms_across_two_multisims_all_replicas(dottedtpath, box, value):
 	#plt.annotate('dashed: development branch before merge', xy=(0.625, 0.93), xycoords='axes fraction', size=7.3)
 	#plt.annotate('dotted: development branch after merge compiled without mpi', xy=(0.625, 0.90), xycoords='axes fraction', size=7.3)
 	#plt.annotate('dashdot: No Parallel Tempering', xy=(0.625, 0.86), xycoords='axes fraction', size=7.3)
+
+	swapfloats = []
+	index = 0
+	checkIfEmpty = "%s/*/*/swaps.dat" % (dottedtpath)
+	for name in glob.glob(checkIfEmpty):
+	#	print "For BOX_%s %s histograms, plotting %s" % (box, value, name)
+		#print temp
+		swapfloats.append(np.fromfile(name, dtype=float, count=-1, sep='\n'))
+		plt.plot(swapfloats[index], np.zeros(swapfloats[index].size))
+		#print floats[index]
+	#	parameters = stats.norm.fit(floats[index])  
+		#lnspc = np.linspace(np.amin(floats[index]), np.amax(floats[index]), floats[index].size)
+	#	lnspc = np.linspace(np.amin(floats[index]), np.amax(floats[index]), (np.amax(floats[index]) - np.amin(floats[index]))/2)
+	#	pdf_gamma = stats.norm.pdf(lnspc,loc = parameters[0],scale = parameters[1])
+	#	if "dev_multisim" in name:
+	#		plt.plot(lnspc, pdf_gamma, linestyle="dashed", linewidth=2)
+	#	elif "nonMPInonPT" in name:
+	#		plt.plot(lnspc, pdf_gamma, linestyle="dotted", linewidth=2)
+	#	else:
+	#		plt.plot(lnspc, pdf_gamma, linewidth=1)		
+		index = index+1
+
+
 	plt.ylabel('Probability')
 	plt.xlabel(value)
 	plt.savefig(filename, bbox_inches='tight')
