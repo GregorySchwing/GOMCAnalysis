@@ -1,7 +1,10 @@
 import sys, os, glob
 import numpy as np  
 from simpleHist import visual_inspection_plots
+from simpleHist import left_skewed_visual_inspection_plots
 from simpleHist import combined_max_likelihood
+from simpleHist import log_transformed_combined_max_likelihood
+from simpleHist import left_skewed_combined_max_likelihood
 from simpleHist import single_replica_MLE
 from simpleHist import plot_histograms_across_two_multisims_individual_replicas
 from simpleHist import plot_histograms_across_two_multisims_all_replicas
@@ -11,6 +14,10 @@ from simpleHist import plot_histograms_within_a_multisim_num_molecules
 from simpleHist import plot_histograms_across_two_multisims_individual_replicas_num_molecules
 from simpleHist import plot_histograms_across_two_multisims_all_replicas_num_molecules
 from simpleHist import testEq6WithinAMultiSim
+from simpleHist import mleExpr
+#from scipy.stats import norm
+#import statsmodels.api as sm
+#from statsmodels.base.model import GenericLikelihoodModel
 
 def generate_energy_files(startpath):
     for root, dirs, files in os.walk(startpath):
@@ -27,7 +34,7 @@ def generate_energy_files(startpath):
             	systemCall1 =  "cat %s | awk \'{print $2}\' > %s/%s_BOX_0.dat" % (name, root, value)
             	os.popen(systemCall1)
             	# To remove equilibration outputs, hardcoded as 5000 lines for now
-            	systemCall3 = "sed -i '1,1d' %s/%s_BOX_0.dat" % (root, value)
+            	systemCall3 = "sed -i '1,480000d' %s/%s_BOX_0.dat" % (root, value)
             	os.popen(systemCall3)
 ########## ONLY IF A Blk*BOX_0.dat EXISTS ################
 
@@ -180,8 +187,13 @@ def generate_energy_histograms_within_a_multisim(startpath, my_dict):
 		if len(glob.glob(checkIfEmpty_2)) > 0:
 			tokens = dirname.split(os.sep)
 			for value in my_dict[tokens[len(tokens)-2]]:
-				visual_inspection_plots(dirname, 0, value)
-				#combined_max_likelihood(dirname, 0, value)
+				#visual_inspection_plots(dirname, 0, value)
+				#left_skewed_visual_inspection_plots(dirname, 0, value)
+				combined_max_likelihood(dirname, 0, value)
+				#mleExpr()
+				#log_transformed_combined_max_likelihood(dirname, 0, value)
+
+				#left_skewed_combined_max_likelihood(dirname, 0, value)
 				#single_replica_MLE(dirname, 0, value)		
 				print dirname+" "+value+" Box 0 histogram generated"
 				
@@ -314,7 +326,7 @@ my_dict = {'mu':listOfGCMCObservables, 'mu_temp':listOfGCMCObservables, 'temp':l
 
 
 generate_energy_files(os.getcwd())
-generate_energy_swaps(os.getcwd())
+#generate_energy_swaps(os.getcwd())
 #os.chdir(homedir)
 #os.chdir("./validation_9_17_19/NPT")
 #generate_density_NPT_files(os.getcwd())
@@ -336,7 +348,7 @@ generate_energy_swaps(os.getcwd())
 #generate_num_molecules_histograms_within_a_multisim(os.getcwd(), my_dict)
 #generate_num_molecules_histograms_across_two_multisims_individual_replicas(os.getcwd(), my_dict)
 #generate_num_molecules_histograms_across_two_multisims_all_replicas(os.getcwd(), my_dict)
-#generate_energy_histograms_within_a_multisim(os.getcwd(), my_dict)
+generate_energy_histograms_within_a_multisim(os.getcwd(), my_dict)
 
 #generate_energy_histograms_across_two_multisims_individual_replicas(os.getcwd(), my_dict)
 generate_energy_histograms_across_two_multisims_all_replicas(os.getcwd(), my_dict)
