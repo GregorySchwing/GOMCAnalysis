@@ -1262,7 +1262,12 @@ def plot_histograms_across_two_multisims_all_replicas(dottedtpath, box, value):
 		return
 	index = 0
 #	print "Right before for loop"
+	fig,(ax1)=plt.subplots(1,1)
 	for name in glob.glob(checkIfEmpty):
+		tokens = name.split(os.sep)
+		print "I think this is temp"
+		lab = tokens[len(tokens)-3] + " : " + tokens[len(tokens)-2]
+		print lab
 		print "For BOX_%s %s histograms, plotting %s" % (box, value, name)
 		#print temp
 		floats.append(np.fromfile(name, dtype=float, count=-1, sep='\n'))
@@ -1273,13 +1278,20 @@ def plot_histograms_across_two_multisims_all_replicas(dottedtpath, box, value):
 
 
 		# histogram ratio in realspace
-		plt.errorbar(
+		ax1.errorbar(
     		x = bincenters1,
-    		y = unnormedHist1
+    		y = unnormedHist1,
+		label = lab
 		)
 		index = index+1
 	
 	filename = "%s/%s_BOX_%s_histograms_of_all_replicas_exchange_vs_nonexchange.png" % (dottedtpath, value, box)
+	# get handles
+	handles, labels = ax1.get_legend_handles_labels()
+	# remove the errorbars
+	handles = [h[0] for h in handles]
+	# use them in the legend
+	ax1.legend(handles, labels, loc='upper left',numpoints=1)
 	#plt.title("NVT Butane") 
 	#plt.annotate('solid: development branch after merge compiled with mpi run as multisim', xy=(0.625, 0.96), xycoords='axes fraction', size=7.3)
 	#plt.annotate('dashed: development branch before merge', xy=(0.625, 0.93), xycoords='axes fraction', size=7.3)

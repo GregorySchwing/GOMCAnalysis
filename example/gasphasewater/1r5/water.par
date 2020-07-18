@@ -1,0 +1,17 @@
+*parameters for water models
+BONDS
+!
+!V(bond) = Kb(b - b0)**2
+!
+!Kb: kcal/mole/A**2
+!b0: A
+!
+OT   HT    9999999999     1.0000 ! SPC bond length 
+
+ANGLES
+HT   OT   HT     9999999999    109.5  ! water
+
+NONBONDED_MIE 
+!SPC/E Water modified
+HT      0.0   0.0   12
+OT	66.11 3.167 12

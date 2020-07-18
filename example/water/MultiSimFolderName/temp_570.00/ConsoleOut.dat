@@ -1,0 +1,181 @@
+Info: GOMC Version 2.50
+Info: Start Time: Sat Jul 18 13:55:37 2020
+Info: Host Name: greg-Latitude-E6530
+CPU information:
+Info: Total number of CPUs: 4
+Info: Total number of CPUs available: 4
+Info: Model name: Intel(R) Core(TM) i5-3340M CPU @ 2.70GHz
+Info: System name: Linux
+Info: Release: 4.15.0-107-generic
+Info: Version: #108~16.04.1-Ubuntu SMP Fri Jun 12 02:57:13 UTC 2020
+Info: Kernel Architecture: x86_64
+Info: Total Ram: 15924.8MB
+Info: Used Ram: 14471.7MB
+Info: Working in the current directory: /home/greg/GOMCAnalysis/example/water
+Info: GOMC COMPILED TO RUN CANONICAL (NVT) ENSEMBLE.
+Info: Number of threads                  1 
+
+Reading Input File:                      in.conf
+Warning: Unknown input Restart!
+Warning: Unknown input PRNG!
+Info: Constant seed                      Active 
+Warning: Unknown input PRNG_ParallelTempering!
+Info: Constant Parallel Tempering seed   Active 
+Info: Parallel Tempering                 Inactive 
+Warning: Unknown input ParallelTemperingFreq!
+Info: PARAMETER file                     MIE format! 
+Warning: Unknown input ParaTypeMie!
+Warning: Unknown input Parameters!
+Warning: Unknown input Coordinates!
+Warning: Unknown input Structure!
+Info: Input Temperature                  570.0000 K
+Warning: Unknown input Temperature!
+Info: Non-truncated potential            Active 
+Warning: Unknown input Potential!
+Info: Long Range Correction              Active 
+Warning: Unknown input LRC!
+Info: Cutoff                             10.0000 A
+Warning: Unknown input Rcut!
+Info: Short Range Cutoff                 1.4000 A
+Warning: Unknown input RcutLow!
+Info: Exclude                            ONE-FOUR 
+Warning: Unknown input Exclude!
+Info: Ewald Summation                    Active 
+Warning: Unknown input Ewald!
+Warning: Unknown input ElectroStatic!
+Info: Cache Ewald Fourier                Inactive 
+Warning: Unknown input CachedFourier!
+Info: Ewald Summation Tolerance          1.000E-05 
+Warning: Unknown input Tolerance!
+Warning: Unknown input 1-4scaling!
+Info: Pressure calculation               Inactive 
+Warning: Unknown input PressureCalc!
+Info: Total number of steps              5000000 
+Warning: Unknown input RunSteps!
+Info: Number of equilibration steps      200000 
+Warning: Unknown input EqSteps!
+Info: Move adjustment frequency          100 
+Warning: Unknown input AdjSteps!
+Info: Displacement move frequency        0.4000 
+Info: Rotation move frequency            0.4000 
+Warning: Unknown input SwapFreq!
+Info: Intra-Swap move frequency          0.2000 
+Info: CBMC First atom trials             3    
+Info: CBMC Secondary atom trials         2    
+Info: CBMC Angle trials                  100  
+Info: CBMC Dihedral trials               1    
+Info: Output name                        MultiSimFolderName/temp_570.00/SPCE 
+Info: Coordinate frequency               10000000 
+Info: Restart frequency                  10000000 
+Info: Console output frequency           10000 
+Info: Average output                     Inactive 
+Warning: Unknown input SampleFreq!
+Default: Multi-Particle move frequency   0.0000 
+Default: Intra-MEMC move frequency       0.0000 
+Default: Regrowth move frequency         0.0000 
+Default: Crank-Shaft move frequency      0.0000 
+Default: Box  0  CutoffCoulomb           10.0000 A
+Note: Average output Inactived. Energy average output will be ignored.
+Note: Average output Inactived. Molecule average output will be ignored.
+Note: Average output Inactived. Density average output will be ignored.
+Finished Reading Input File:             in.conf
+
+Reading from EXOTIC-Style parameter file:  	./water.par
+Reading BONDS parameters.
+Reading ANGLES parameters.
+Reading NONBONDED_MIE parameters.
+Finished reading EXOTIC-Style parameter file:  	./water.par
+Reading from system PDB coordinate file:  	./START_BOX_0.pdb
+Random number seed: 5000
+Random number seed: 50
+
+Molecules in PSF:
+Molecule Kind: SPCE
+Idx	name	type	charge	mass
+0	O1	OT	-0.8476	15.9990
+1	H1	HT	0.4238	1.0080
+2	H2	HT	0.4238	1.0080
+
+Bonds:
+[0 1] [0 2] 
+
+Angles:
+[1 0 2] 
+
+Dihedrals:
+
+Bonds parameter:
+Atom Types                             Kb(K)           b0(A) 
+OT	HT	                         FIX           1.0000 
+
+Angles parameter:
+Atom Types                         Ktheta(K)         theta0(degree) 
+HT	OT	HT	                 FIX         109.5000 
+
+Dihedrals parameter:
+Atom Types                           Kchi(K)    n    delta(degree) 
+
+NonBonded 1-4 parameters:
+Type1  Type2             Epsilon(K)    Sigma(A)       N 
+OT     OT                   66.1100      3.1670   12.00 
+OT     HT                    0.0000      1.5835   12.00 
+HT     HT                    0.0000      0.0000   12.00 
+
+NonBonded parameters:
+Type1  Type2             Epsilon(K)    Sigma(A)       N 
+OT     OT                   66.1100      3.1670   12.00 
+OT     HT                    0.0000      1.5835   12.00 
+HT     HT                    0.0000      0.0000   12.00 
+
+Info: Box  0:  Periodic Cell Basis 1     25.000   0.000   0.000 
+Info: Box  0:  Periodic Cell Basis 2      0.000  25.000   0.000 
+Info: Box  0:  Periodic Cell Basis 3      0.000   0.000  25.000 
+
+Minimum coordinates in box 0: x =   -0.575, y =   -0.226, z =    4.287
+Maximum coordinates in box 0: x =   21.201, y =   24.286, z =   19.085
+Wrapping molecules inside the simulation box 0:
+Box: 0, RecipVectors:   1595, kmax: 10
+
+################################################################################
+########################## INITIAL SIMULATION ENERGY ###########################
+
+ETITLE:     STEP           TOTAL        INTRA(B)       INTRA(NB)       INTER(LJ)             LRC     TOTAL_ELECT            REAL           RECIP            SELF            CORR
+
+ENER_0:        0     -1.1235e+04      0.0000e+00      0.0000e+00      3.2023e+03     -8.0443e+00     -1.4429e+04     -1.3371e+04      8.3791e+03     -5.1677e+05      5.0733e+05
+
+STITLE:     STEP        TOTALMOL     TOT_DENSITY
+
+STAT_0:        0              15      2.8718e+01
+
+################################################################################
+############################# STARTING SIMULATION ##############################
+
+MTITLE:     STEP          DISTRY       DISACCEPT      DISACCEPT%          DISMAX          ROTATE       ROTACCEPT      ROTACCEPT%          ROTMAX       INTRASWAP       INTACCEPT      INTACCEPT%
+
+ETITLE:     STEP           TOTAL        INTRA(B)       INTRA(NB)       INTER(LJ)             LRC     TOTAL_ELECT            REAL           RECIP            SELF            CORR
+
+STITLE:     STEP        TOTALMOL     TOT_DENSITY
+
+Printed combined psf to file MultiSimFolderName/temp_570.00/SPCE_merged.psf
+MOVE_0:    10000            4012            2052      5.1147e+01      2.7514e+00            3979            2280      5.7301e+01      3.1416e+00            2009             691      3.4395e+01
+
+ENER_0:    10000     -5.8994e+03      0.0000e+00      0.0000e+00      2.2128e+03     -8.0443e+00     -8.1041e+03     -6.4382e+03      7.7660e+03     -5.1677e+05      5.0734e+05
+
+STAT_0:    10000              15      2.8718e+01
+
+Steps/sec: 2358.472, Simulation ends in:   0 d:   0 h:  36 m 
+
+MOVE_0:    20000            7901            4048      5.1234e+01      6.1174e-01            8052            4561      5.6644e+01      1.1864e+00            4047            1339      3.3086e+01
+
+ENER_0:    20000     -2.8666e+04      0.0000e+00      0.0000e+00      4.1058e+03     -8.0443e+00     -3.2764e+04     -2.8545e+04      5.2136e+03     -5.1677e+05      5.0734e+05
+
+STAT_0:    20000              15      2.8718e+01
+
+Steps/sec: 2582.167, Simulation ends in:   0 d:   0 h:  34 m 
+
+MOVE_0:    30000           11910            6146      5.1604e+01      2.5687e+00           12089            6817      5.6390e+01      3.1416e+00            6001            1948      3.2461e+01
+
+ENER_0:    30000     -1.4576e+04      0.0000e+00      0.0000e+00      2.3967e+03     -8.0443e+00     -1.6964e+04     -1.5826e+04      8.2933e+03     -5.1677e+05      5.0734e+05
+
+STAT_0:    30000              15      2.8718e+01
+

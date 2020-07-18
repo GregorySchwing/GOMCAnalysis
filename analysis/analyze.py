@@ -34,7 +34,7 @@ def generate_energy_files(startpath):
             	systemCall1 =  "cat %s | awk \'{print $2}\' > %s/%s_BOX_0.dat" % (name, root, value)
             	os.popen(systemCall1)
             	# To remove equilibration outputs, hardcoded as 5000 lines for now
-            	systemCall3 = "sed -i '1,480000d' %s/%s_BOX_0.dat" % (root, value)
+            	systemCall3 = "sed -i '1,400000d' %s/%s_BOX_0.dat" % (root, value)
             	os.popen(systemCall3)
 ########## ONLY IF A Blk*BOX_0.dat EXISTS ################
 
@@ -187,9 +187,9 @@ def generate_energy_histograms_within_a_multisim(startpath, my_dict):
 		if len(glob.glob(checkIfEmpty_2)) > 0:
 			tokens = dirname.split(os.sep)
 			for value in my_dict[tokens[len(tokens)-2]]:
-				#visual_inspection_plots(dirname, 0, value)
+				visual_inspection_plots(dirname, 0, value)
 				#left_skewed_visual_inspection_plots(dirname, 0, value)
-				combined_max_likelihood(dirname, 0, value)
+				#combined_max_likelihood(dirname, 0, value)
 				#mleExpr()
 				#log_transformed_combined_max_likelihood(dirname, 0, value)
 
@@ -348,7 +348,7 @@ generate_energy_files(os.getcwd())
 #generate_num_molecules_histograms_within_a_multisim(os.getcwd(), my_dict)
 #generate_num_molecules_histograms_across_two_multisims_individual_replicas(os.getcwd(), my_dict)
 #generate_num_molecules_histograms_across_two_multisims_all_replicas(os.getcwd(), my_dict)
-generate_energy_histograms_within_a_multisim(os.getcwd(), my_dict)
+#generate_energy_histograms_within_a_multisim(os.getcwd(), my_dict)
 
 #generate_energy_histograms_across_two_multisims_individual_replicas(os.getcwd(), my_dict)
 generate_energy_histograms_across_two_multisims_all_replicas(os.getcwd(), my_dict)
